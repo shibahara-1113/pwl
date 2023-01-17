@@ -5,3 +5,4 @@
 *.pyc
 *.egg-info
 pwl/.DS_Store
+.DS_Store
