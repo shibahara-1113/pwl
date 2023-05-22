@@ -14,6 +14,6 @@ setup(
     version="2023.01.16",
     packages=find_packages(),
     description="A deep learning library",
-    install_requires=["torch"],
+    install_requires=["torch", "pytorch_lightning"],
     test_suite="nose.collector",
 )

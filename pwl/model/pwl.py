@@ -74,7 +74,7 @@ class PWL(pl.LightningModule):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         self.rho = self.rho_unit(x)
-        return self.output_linear(self.rho * x)
+        return torch.clamp(self.output_linear(self.rho * x), min=-1.0, max=1.0)
 
     def weights(self, x: torch.Tensor) -> torch.Tensor:
         with torch.no_grad():
@@ -100,7 +100,7 @@ class PWL(pl.LightningModule):
         yh = self.forward(x)
         return self.criterion(torch.log_softmax(yh, dim=-1), y.long()) + self.regulizer()
 
-    def training_epoch_end(self, train_step_outputs):
+    def on_training_epoch_end(self, train_step_outputs):
         loss = torch.stack([val["loss"] for val in train_step_outputs], dim=0).mean()
         self.log("train_loss", loss, prog_bar=True, on_epoch=True)
 
